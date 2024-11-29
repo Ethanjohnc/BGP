@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGP Role Call Geneator</title>
+    <style>
+        body {
+            font-family: "Georgia", serif;
+            background-color: #f4f0e6;
+            color: #2b2b2b;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fffef6;
+            padding: 20px;
+            border: 2px solid #d4b484;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        h1 {
+            font-family: "Garamond", serif;
+            font-size: 2.5rem;
+            color: #4a3621;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px #d4b484;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #d4b484;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .form-group textarea {
+            resize: vertical;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #6b4226;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #4a2d1a;
+        }
+        .output {
+            white-space: pre-wrap;
+            background: #fdfaf0;
+            padding: 15px;
+            border: 1px solid #d4b484;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-family: "Courier New", monospace;
+            font-size: 1rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #6b4226;
+        }
+        footer a {
+            color: #6b4226;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Battle Report Generator</h1>
+        <form id="battleForm">
+            <div class="form-group">
+                <label for="battleName">Name of Battle</label>
+                <input type="text" id="battleName" required>
+            </div>
+            <div class="form-group">
+                <label for="lineCommander">Line Commander (Discord @ or Roblox username)</label>
+                <input type="text" id="lineCommander" placeholder="E.g., @Commander or CommanderRoblox" required>
+            </div>
+            <div class="form-group">
+                <label for="peakRally">Peak Rally</label>
+                <input type="text" id="peakRally" required>
+            </div>
+            <div class="form-group">
+                <label for="lossRally">Loss Rally</label>
+                <input type="text" id="lossRally" required>
+            </div>
+            <div class="form-group">
+                <label for="flagTeam">Flag Team</label>
+                <input type="text" id="flagTeam" placeholder="Use @??? for unknown team members" required>
+            </div>
+            <div class="form-group">
+                <label for="flagCaps">Flag Caps</label>
+                <input type="text" id="flagCaps" required>
+            </div>
+            <div class="form-group">
+                <label for="flagLosses">Flag Losses</label>
+                <input type="text" id="flagLosses" required>
+            </div>
+            <div class="form-group">
+                <label for="tickets">Tickets</label>
+                <input type="text" id="tickets" required>
+            </div>
+            <div class="form-group">
+                <label for="dpp">DPP</label>
+                <input type="text" id="dpp" required>
+            </div>
+            <div class="form-group">
+                <label for="stars">Stars (1-8)</label>
+                <input type="text" id="stars" required>
+            </div>
+            <div class="form-group">
+                <label for="audit">Audit (optional)</label>
+                <textarea id="audit" rows="5" placeholder="Paste audit details here"></textarea>
+            </div>
+            <button type="button" class="btn" onclick="rolecallgenerate()">Generate Role Call</button>
+        </form>
+        <div class="output" id="output"></div>
+    </div>
+    <footer>
+        <p>Made for BGP| <a href="#">By Ethan</a></p>
+    </footer>
+    <script>
+        function rolecallgenerate() {
+            const battleName = document.getElementById('battleName').value;
+            const lineCommander = document.getElementById('lineCommander').value;
+            const peakRally = document.getElementById('peakRally').value;
+            const lossRally = document.getElementById('lossRally').value;
+            const flagTeam = document.getElementById('flagTeam').value;
+            const flagCaps = document.getElementById('flagCaps').value;
+            const flagLosses = document.getElementById('flagLosses').value;
+            const tickets = document.getElementById('tickets').value;
+            const dpp = document.getElementById('dpp').value;
+            const starsInput = document.getElementById('stars').value;
+            const audit = document.getElementById('audit').value;
+
+            const starEmojis = {
+                1: ":stars1:",
+                2: ":stars2:",
+                3: ":stars3:",
+                4: ":stars4:",
+                5: ":stars5:",
+                6: ":stars6:",
+                7: ":stars7:",
+                8: ":stars8:"
+            };
+            const stars = starEmojis[starsInput] || "Invalid stars input";
+
+            const report = `
+## :WAR: ${battleName}
+:staff:  Line Commander: ${lineCommander}
+:Puk_15_Uanw:  Peak Rally: ${peakRally}
+:Puk_7my_Uanw:  Loss Rally: ${lossRally}
+
+## :scroll:  TEAM PERFORMANCE
+:postal_horn:  Flag Team: ${flagTeam}
+:COATOFARMS:  Flag Caps: ${flagCaps}
+:Augustyn:  Flag Losses: ${flagLosses}
+
+## :scroll:  RANKER PERFORMANCE
+:romanone:  **TICKETS** - ${tickets}
+:romantwo:  **DPP** - ${dpp}
+:romanthree:  **STARS** - ${stars}
+
+${audit ? "## 📝 AUDIT\n" + audit + "\n" : ""}
+ATTACH FULL LEADERBOARD PHOTO
+            `;
+            document.getElementById('output').textContent = report;
+        }
+    </script>
+</body>
+</html>
