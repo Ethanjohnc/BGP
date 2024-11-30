@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BGP Role Call Geneator</title>
+    <title>BGP Role Call Generator</title>
     <style>
         body {
             font-family: "Georgia", serif;
@@ -89,6 +89,23 @@
         footer a:hover {
             text-decoration: underline;
         }
+        .copy-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -136,18 +153,19 @@
                 <input type="text" id="stars" required>
             </div>
             <div class="form-group">
-                <label for="audit">Audit (Please use name [k] [d] [a] n in the audit commands)</label>
+                <label for="audit">Audit (optional)</label>
                 <textarea id="audit" rows="5" placeholder="Paste audit details here"></textarea>
             </div>
-            <button type="button" class="btn" onclick="rolecallgenerate()">Generate Role Call</button>
+            <button type="button" class="btn" onclick="generateReport()">Generate Role Call</button>
         </form>
         <div class="output" id="output"></div>
+        <button class="copy-btn" id="copyButton" style="display:none" onclick="copyToClipboard()">Copy to Clipboard</button>
     </div>
     <footer>
-        <p>Made for BGP| <a href="#">By Ethan</a></p>
+        <p>Made for BGP | By Ethan</p>
     </footer>
     <script>
-        function rolecallgenerate() {
+        function generateReport() {
             const battleName = document.getElementById('battleName').value;
             const lineCommander = document.getElementById('lineCommander').value;
             const peakRally = document.getElementById('peakRally').value;
@@ -192,6 +210,16 @@ ${audit ? "## 📝 AUDIT\n" + audit + "\n" : ""}
 ATTACH FULL LEADERBOARD PHOTO
             `;
             document.getElementById('output').textContent = report;
+            document.getElementById('copyButton').style.display = 'block';  // Show copy button when report is generated
+        }
+
+        function copyToClipboard() {
+            const outputText = document.getElementById('output').textContent;
+            navigator.clipboard.writeText(outputText).then(function() {
+                alert('Report copied to clipboard!');
+            }).catch(function(error) {
+                alert('Failed to copy report: ' + error);
+            });
         }
     </script>
 </body>
