@@ -1,1 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGP Schedule Creator</title>
+    <style>
+        body {
+            font-family: "Georgia", serif;
+            background-color: #f4f0e6;
+            color: #2b2b2b;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fffef6;
+            padding: 20px;
+            border: 2px solid #d4b484;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        h1 {
+            font-family: "Garamond", serif;
+            font-size: 2.5rem;
+            color: #4a3621;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px #d4b484;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #d4b484;
+            color: #2b2b2b;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #c0a060;
+        }
+        .output-section {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background: #f9f7f2;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .copy-button {
+            display: none;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background-color: #d4b484;
+            color: #2b2b2b;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .copy-button:hover {
+            background-color: #c0a060;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #6b4226;
+        }
+        footer a {
+            color: #6b4226;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BGP Schedule Creator</h1>
+        <form id="scheduleForm">
+            <!-- Week Dates -->
+            <label for="weekDates">Week Dates (e.g., 2/10 - 2/16):</label>
+            <input type="text" id="weekDates" placeholder="Enter week dates">
 
+            <!-- Saturday Event -->
+            <label>Saturday Event:</label>
+            <input type="text" id="saturdayEventName" placeholder="Event Name (e.g., ARMYWIDE AGAINST: PORTUGAL)">
+            <input type="url" id="saturdayEventLink" placeholder="Event Link (e.g., https://discord.gg/vH7dFVtn?event=...)">
+
+            <!-- Sunday Event -->
+            <label>Sunday Event:</label>
+            <input type="text" id="sundayEventName" placeholder="Event Name (e.g., ARMYWIDE AGAINST: ANDOUR)">
+            <input type="url" id="sundayEventLink" placeholder="Event Link (e.g., https://discord.gg/nwxw?event=...)">
+
+            <!-- Days of the Week -->
+            <label>Tuesday:</label>
+            <label><input type="checkbox" id="tuesdayNoEvent"> No Event</label>
+            <label><input type="checkbox" id="tuesdayEU"> EU Battle</label>
+            <label><input type="radio" name="tuesdayEUTime" value="3pm" checked> 3 PM EST</label>
+            <label><input type="radio" name="tuesdayEUTime" value="4pm"> 4 PM EST</label>
+            <label><input type="checkbox" id="tuesdayNA"> NA Battle</label>
+
+            <label>Wednesday:</label>
+            <label><input type="checkbox" id="wednesdayNoEvent"> No Event</label>
+            <label><input type="checkbox" id="wednesdayEU"> EU Battle</label>
+            <label><input type="radio" name="wednesdayEUTime" value="3pm" checked> 3 PM EST</label>
+            <label><input type="radio" name="wednesdayEUTime" value="4pm"> 4 PM EST</label>
+            <label><input type="checkbox" id="wednesdayNA"> NA Battle</label>
+
+            <label>Thursday:</label>
+            <label><input type="checkbox" id="thursdayNoEvent"> No Event</label>
+            <label><input type="checkbox" id="thursdayEU"> EU Battle</label>
+            <label><input type="radio" name="thursdayEUTime" value="3pm" checked> 3 PM EST</label>
+            <label><input type="radio" name="thursdayEUTime" value="4pm"> 4 PM EST</label>
+            <label><input type="checkbox" id="thursdayNA"> NA Battle</label>
+
+            <label>Friday:</label>
+            <label><input type="checkbox" id="fridayNoEvent"> No Event</label>
+            <label><input type="checkbox" id="fridayEU"> EU Battle</label>
+            <label><input type="radio" name="fridayEUTime" value="3pm" checked> 3 PM EST</label>
+            <label><input type="radio" name="fridayEUTime" value="4pm"> 4 PM EST</label>
+            <label><input type="checkbox" id="fridayNA"> NA Battle</label>
+
+            <label>Saturday:</label>
+            <label><input type="checkbox" id="saturdayNA"> NA Battle</label>
+
+            <label>Sunday:</label>
+            <label><input type="checkbox" id="sundayNA"> NA Battle</label>
+
+            <!-- Generate Button -->
+            <button type="button" onclick="generateSchedule()">Generate Schedule</button>
+        </form>
+
+        <!-- Header Output Section -->
+        <div class="output-section" id="headerOutput"></div>
+        <button class="copy-button" id="copyHeaderButton" onclick="copyHeaderToClipboard()" style="display: none;">Copy Header to Clipboard</button>
+
+        <!-- Main Schedule Output Section -->
+        <div class="output-section" id="scheduleOutput"></div>
+        <button class="copy-button" id="copyScheduleButton" onclick="copyScheduleToClipboard()" style="display: none;">Copy Schedule to Clipboard</button>
+
+        <footer>
+            <p>Made for BGP | By Ethan</p>
+        </footer>
+    </div>
+
+    <script>
+        function generateSchedule() {
+            // Get inputs
+            const weekDates = document.getElementById('weekDates').value;
+
+            const saturdayEventName = document.getElementById('saturdayEventName').value;
+            const saturdayEventLink = document.getElementById('saturdayEventLink').value;
+
+            const sundayEventName = document.getElementById('sundayEventName').value;
+            const sundayEventLink = document.getElementById('sundayEventLink').value;
+
+            const tuesdayNoEvent = document.getElementById('tuesdayNoEvent').checked;
+            const tuesdayEU = document.getElementById('tuesdayEU').checked;
+            const tuesdayEUTime = document.querySelector('input[name="tuesdayEUTime"]:checked').value;
+            const tuesdayNA = document.getElementById('tuesdayNA').checked;
+
+            const wednesdayNoEvent = document.getElementById('wednesdayNoEvent').checked;
+            const wednesdayEU = document.getElementById('wednesdayEU').checked;
+            const wednesdayEUTime = document.querySelector('input[name="wednesdayEUTime"]:checked').value;
+            const wednesdayNA = document.getElementById('wednesdayNA').checked;
+
+            const thursdayNoEvent = document.getElementById('thursdayNoEvent').checked;
+            const thursdayEU = document.getElementById('thursdayEU').checked;
+            const thursdayEUTime = document.querySelector('input[name="thursdayEUTime"]:checked').value;
+            const thursdayNA = document.getElementById('thursdayNA').checked;
+
+            const fridayNoEvent = document.getElementById('fridayNoEvent').checked;
+            const fridayEU = document.getElementById('fridayEU').checked;
+            const fridayEUTime = document.querySelector('input[name="fridayEUTime"]:checked').value;
+            const fridayNA = document.getElementById('fridayNA').checked;
+
+            const saturdayNA = document.getElementById('saturdayNA').checked;
+
+            const sundayNA = document.getElementById('sundayNA').checked;
+
+            // Calculate epoch timestamps for the current week
+            const now = new Date();
+            const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+            const startOfWeek = new Date(now.setDate(now.getDate() - currentDay + (currentDay === 0 ? -6 : 1))); // Monday
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(endOfWeek.getDate() + 6); // Sunday
+
+            const getEpochTime = (dayOffset, hour, minute) => {
+                const date = new Date(startOfWeek);
+                date.setDate(date.getDate() + dayOffset);
+                date.setHours(hour, minute, 0, 0);
+
+                // Adjust for UTC+5 timezone offset (+5 hours from UTC)
+                const utcPlus5Offset = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
+                const epochTime = Math.floor((date.getTime() + utcPlus5Offset) / 1000);
+                return epochTime;
+            };
+
+            // Build header
+            let header = `# <:Warsaw:973934291610386512> *POLSKICH GRENADIEROW SCHEDULE* <:BatalionuGrenadierwPolskich:1325163003297009674>\n`;
+            header += `                           *${weekDates}*\n\n`;
+            header += `<:Eagle:1203658131134087168>   **-**   **CRUICAL EVENT**\n`;
+            header += `>  Grand Battle's / Campaign Battles or Fighting Rivals of the Regiment. **MANDATORY**\n\n`;
+            header += `<:Bober:1279586151182766091>   **-**   **COMPETITIVE EVENT**\n`;
+            header += `>  Mini Grand Battle's / Army Wide's / Korp Wide's used to learn and improve how to be better teamate and ranker. **MANDATORY**\n\n`;
+            header += `<:WAR:1163681804679651338>   **-**   **STANDARD EVENT**\n`;
+            header += `>  Everyday battles that are used to improve as a regiment. **SEMI MANDATORY**\n\n`;
+
+            // Build schedule
+            let schedule = ``;
+
+            // Tuesday
+            if (tuesdayNoEvent) {
+                schedule += `***Tuesday***\n> NO EVENTS\n\n\n`;
+            } else {
+                schedule += `***Tuesday***\n`;
+                if (tuesdayEU) {
+                    const euPreRallyHour = tuesdayEUTime === "3pm" ? 14 : 15; // 2:30 PM or 3:30 PM EST
+                    const euStartHour = tuesdayEUTime === "3pm" ? 15 : 16;   // 3 PM or 4 PM EST
+                    schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
+                    schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, euPreRallyHour, 30)}:f>\n`;
+                    schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, euStartHour, 0)}:f>\n`;
+                    if (tuesdayNA) {
+                        schedule += `> \n`; // Blank line between events
+                    }
+                }
+                if (tuesdayNA) {
+                    schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
+                    schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, 19, 0)}:f>\n`;
+                    schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, 19, 30)}:f>\n`;
+                }
+                schedule += `\n\n`;
+            }
+
+            // Wednesday
+            if (wednesdayNoEvent) {
+                schedule += `***Wednesday***\n> NO EVENTS\n\n\n`;
+            } else {
+                schedule += `***Wednesday***\n`;
+                if (wednesdayEU) {
+                    const euPreRallyHour = wednesdayEUTime === "3pm" ? 14 : 15; // 2:30 PM or 3:30 PM EST
+                    const euStartHour = wednesdayEUTime === "3pm" ? 15 : 16;   // 3 PM or 4 PM EST
+                    schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
+                    schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, euPreRallyHour, 30)}:f>\n`;
+                    schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, euStartHour, 0)}:f>\n`;
+                    if (wednesdayNA) {
+                        schedule += `> \n`; // Blank line between events
+                    }
+                }
+                if (wednesdayNA) {
+                    schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
+                    schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, 19, 0)}:f>\n`;
+                    schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, 19, 30)}:f>\n`;
+                }
+                schedule += `\n\n`;
+            }
+
+            // Thursday
+            if (thursdayNoEvent) {
+                schedule += `***Thursday***\n> NO EVENTS\n\n\n`;
+            } else {
+                schedule += `***Thursday***\n`;
+                if (thursdayEU) {
+                    const euPreRallyHour = thursdayEUTime === "3pm" ? 14 : 15; // 2:30 PM or 3:30 PM EST
+                    const euStartHour = thursdayEUTime === "3pm" ? 15 : 16;   // 3 PM or 4 PM EST
+                    schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
+                    schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, euPreRallyHour, 30)}:f>\n`;
+                    schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, euStartHour, 0)}:f>\n`;
+                    if (thursdayNA) {
+                        schedule += `> \n`; // Blank line between events
+                    }
+                }
+                if (thursdayNA) {
+                    schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
+                    schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, 19, 0)}:f>\n`;
+                    schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, 19, 30)}:f>\n`;
+                }
+                schedule += `\n\n`;
+            }
+
+            // Friday
+            if (fridayNoEvent) {
+                schedule += `***Friday***\n> NO EVENTS\n\n\n`;
+            } else {
+                schedule += `***Friday***\n`;
+                if (fridayEU) {
+                    const euPreRallyHour = fridayEUTime === "3pm" ? 14 : 15; // 2:30 PM or 3:30 PM EST
+                    const euStartHour = fridayEUTime === "3pm" ? 15 : 16;   // 3 PM or 4 PM EST
+                    schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
+                    schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(4, euPreRallyHour, 30)}:f>\n`;
+                    schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(4, euStartHour, 0)}:f>\n`;
+                    if (fridayNA) {
+                        schedule += `> \n`; // Blank line between events
+                    }
+                }
+                if (fridayNA) {
+                    schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
+                    schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(4, 19, 0)}:f>\n`;
+                    schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(4, 19, 30)}:f>\n`;
+                }
+                schedule += `\n\n`;
+            }
+
+            // Saturday
+            if (saturdayEventName && saturdayEventLink) {
+                const saturdayDate = new Date(startOfWeek);
+                saturdayDate.setDate(saturdayDate.getDate() + 5); // Saturday
+                const formattedDate = `${saturdayDate.getMonth() + 1}.${saturdayDate.getDate()}`;
+                schedule += `## ***Saturday, ${formattedDate}***\n`;
+                schedule += `>  <:Bober:1279586151182766091> ${saturdayEventName}\n`;
+                schedule += `>  ${saturdayEventLink}\n`;
+                if (saturdayNA) {
+                    schedule += `> \n`; // Blank line between events
+                }
+            }
+            if (saturdayNA) {
+                schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
+                schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(5, 19, 0)}:f>\n`;
+                schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(5, 19, 30)}:f>\n`;
+            }
+            schedule += `\n\n`;
+
+            // Sunday
+            if (sundayEventName && sundayEventLink) {
+                const sundayDate = new Date(startOfWeek);
+                sundayDate.setDate(sundayDate.getDate() + 6); // Sunday
+                const formattedDate = `${sundayDate.getMonth() + 1}.${sundayDate.getDate()}`;
+                schedule += `## ***Sunday, ${formattedDate}***\n`;
+                schedule += `>  <:Bober:1279586151182766091> ${sundayEventName}\n`;
+                schedule += `>  ${sundayEventLink}\n`;
+                if (sundayNA) {
+                    schedule += `> \n`; // Blank line between events
+                }
+            }
+            if (sundayNA) {
+                schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
+                schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(6, 19, 0)}:f>\n`;
+                schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(6, 19, 30)}:f>\n`;
+            }
+            schedule += `\n\n`;
+
+            // Display outputs
+            document.getElementById('headerOutput').textContent = header;
+            document.getElementById('scheduleOutput').textContent = schedule;
+
+            // Show copy buttons
+            document.getElementById('copyHeaderButton').style.display = 'block';
+            document.getElementById('copyScheduleButton').style.display = 'block';
+        }
+
+        function copyHeaderToClipboard() {
+            const headerOutput = document.getElementById('headerOutput').textContent;
+
+            navigator.clipboard.writeText(headerOutput).then(() => {
+                alert('Header copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy text. Please try again.');
+            });
+        }
+
+        function copyScheduleToClipboard() {
+            const scheduleOutput = document.getElementById('scheduleOutput').textContent;
+
+            navigator.clipboard.writeText(scheduleOutput).then(() => {
+                alert('Schedule copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy text. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
