@@ -90,9 +90,30 @@
         footer a:hover {
             text-decoration: underline;
         }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #6b4226;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+        .back-button:hover {
+            background-color: #4a2d1a;
+        }
     </style>
 </head>
 <body>
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='index.html'">Back to Role Call Generator</button>
+
     <div class="container">
         <h1>BGP Schedule Creator</h1>
         <form id="scheduleForm">
@@ -357,7 +378,7 @@
                 schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(6, 19, 30)}:f>\n`;
             }
             schedule += `\n\n`;
-
+            
             // Display outputs
             document.getElementById('headerOutput').textContent = header;
             document.getElementById('scheduleOutput').textContent = schedule;
