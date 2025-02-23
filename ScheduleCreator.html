@@ -120,10 +120,6 @@
   <div class="container">
     <h1>BGP Schedule Creator</h1>
     <form id="scheduleForm">
-      <!-- Week Dates -->
-      <label for="weekDates">Week Dates (e.g., 2/10 - 2/16):</label>
-      <input type="text" id="weekDates" placeholder="Enter week dates" />
-
       <!-- Saturday Event -->
       <label>Saturday Event:</label>
       <input type="text" id="saturdayEventName" placeholder="Event Name (e.g., ARMYWIDE AGAINST: PORTUGAL)" />
@@ -210,15 +206,13 @@
     // Returns the current time as a Date in EST (UTC-5)
     function getCurrentEST() {
       const now = new Date();
-      // Convert current time to UTC, then subtract 5 hours for EST
       const utc = now.getTime() + now.getTimezoneOffset() * 60000;
       return new Date(utc - (5 * 60 * 60000));
     }
 
     // Generate the schedule using EST as the base timezone.
     function generateSchedule() {
-      // Get form inputs
-      const weekDates = document.getElementById("weekDates").value;
+      // Get form inputs for Saturday and Sunday events
       const saturdayEventName = document.getElementById("saturdayEventName").value;
       const saturdayEventLink = document.getElementById("saturdayEventLink").value;
       const sundayEventName = document.getElementById("sundayEventName").value;
@@ -247,26 +241,30 @@
       const saturdayNA = document.getElementById("saturdayNA").checked;
       const sundayNA = document.getElementById("sundayNA").checked;
 
-      // --- Compute the start of the week in EST ---
-      // Get current time in EST
+      // --- Compute the upcoming Tuesday in EST ---
       const nowEST = getCurrentEST();
       const currentDayEST = nowEST.getDay(); // 0 (Sunday) to 6 (Saturday)
-      // Determine Monday. (If today is Sunday (0), treat it as the last day of the week.)
-      const diff = currentDayEST === 0 ? -6 : 1 - currentDayEST;
+      // Calculate days until next Tuesday (day 2). If today is Tuesday or later, add 7.
+      let diffToTuesday = 2 - currentDayEST;
+      if (diffToTuesday <= 0) {
+        diffToTuesday += 7;
+      }
       const startOfWeekEST = new Date(nowEST);
-      startOfWeekEST.setDate(nowEST.getDate() + diff);
+      startOfWeekEST.setDate(nowEST.getDate() + diffToTuesday);
 
-      // --- Helper: Compute epoch timestamp for a given day offset and EST time ---
-      // For a given day (relative to Monday in EST) and a specified hour/minute in EST,
-      // we convert that to a UTC timestamp by adding 5 hours.
+      // Calculate Sunday (Tuesday + 5 days)
+      const endOfWeekEST = new Date(startOfWeekEST);
+      endOfWeekEST.setDate(startOfWeekEST.getDate() + 5);
+      const formattedWeekDates = `${startOfWeekEST.getMonth() + 1}/${startOfWeekEST.getDate()} - ${endOfWeekEST.getMonth() + 1}/${endOfWeekEST.getDate()}`;
+
+      // --- Helper: Compute epoch timestamp for a given day offset (from Tuesday) and EST time ---
       const getEpochTime = (dayOffset, hour, minute) => {
-        // Create a date from the EST Monday plus the offset
         const eventDate = new Date(startOfWeekEST);
         eventDate.setDate(eventDate.getDate() + dayOffset);
         const year = eventDate.getFullYear();
         const month = eventDate.getMonth();
         const day = eventDate.getDate();
-        // Since EST is UTC–5, add 5 to the EST hour to get the UTC hour.
+        // Convert EST hour to UTC hour by adding 5
         const utcHour = hour + 5;
         const eventUTC = new Date(Date.UTC(year, month, day, utcHour, minute, 0));
         return Math.floor(eventUTC.getTime() / 1000);
@@ -274,7 +272,7 @@
 
       // --- Build Header ---
       let header = `# <:Warsaw:973934291610386512> *POLSKICH GRENADIEROW SCHEDULE* <:BatalionuGrenadierwPolskich:1325163003297009674>\n`;
-      header += `                           *${weekDates}*\n\n`;
+      header += `                           *${formattedWeekDates}*\n\n`;
       header += `<:Eagle:1203658131134087168>   **-**   **CRUICAL EVENT**\n`;
       header += `>  Grand Battle's / Campaign Battles or Fighting Rivals of the Regiment. **MANDATORY**\n\n`;
       header += `<:Bober:1279586151182766091>   **-**   **COMPETITIVE EVENT**\n`;
@@ -285,30 +283,28 @@
       // --- Build Schedule ---
       let schedule = ``;
 
-      // Tuesday (dayOffset 1)
+      // Tuesday (dayOffset 0)
       if (tuesdayNoEvent) {
         schedule += `***Tuesday***\n> NO EVENTS\n\n\n`;
       } else {
         schedule += `***Tuesday***\n`;
         if (tuesdayEU) {
-          // If 3 PM EST is chosen, pre rally is at 2:30 EST, start at 3:00 EST.
-          // If 4 PM EST is chosen, pre rally is at 3:30 EST, start at 4:00 EST.
           const euPreRallyHour = tuesdayEUTime === "3pm" ? 14 : 15;
           const euStartHour   = tuesdayEUTime === "3pm" ? 15 : 16;
           schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, euPreRallyHour, 30)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, euStartHour, 0)}:f>\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(0, euPreRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(0, euStartHour, 0)}:f>\n`;
           if (tuesdayNA) schedule += `> \n`;
         }
         if (tuesdayNA) {
           schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, 19, 0)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, 19, 30)}:f>\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(0, 19, 0)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(0, 19, 30)}:f>\n`;
         }
         schedule += `\n\n`;
       }
 
-      // Wednesday (dayOffset 2)
+      // Wednesday (dayOffset 1)
       if (wednesdayNoEvent) {
         schedule += `***Wednesday***\n> NO EVENTS\n\n\n`;
       } else {
@@ -317,19 +313,19 @@
           const euPreRallyHour = wednesdayEUTime === "3pm" ? 14 : 15;
           const euStartHour   = wednesdayEUTime === "3pm" ? 15 : 16;
           schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, euPreRallyHour, 30)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, euStartHour, 0)}:f>\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, euPreRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, euStartHour, 0)}:f>\n`;
           if (wednesdayNA) schedule += `> \n`;
         }
         if (wednesdayNA) {
           schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, 19, 0)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, 19, 30)}:f>\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, 19, 0)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, 19, 30)}:f>\n`;
         }
         schedule += `\n\n`;
       }
 
-      // Thursday (dayOffset 3)
+      // Thursday (dayOffset 2)
       if (thursdayNoEvent) {
         schedule += `***Thursday***\n> NO EVENTS\n\n\n`;
       } else {
@@ -338,19 +334,19 @@
           const euPreRallyHour = thursdayEUTime === "3pm" ? 14 : 15;
           const euStartHour   = thursdayEUTime === "3pm" ? 15 : 16;
           schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, euPreRallyHour, 30)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, euStartHour, 0)}:f>\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, euPreRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, euStartHour, 0)}:f>\n`;
           if (thursdayNA) schedule += `> \n`;
         }
         if (thursdayNA) {
           schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, 19, 0)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, 19, 30)}:f>\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, 19, 0)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, 19, 30)}:f>\n`;
         }
         schedule += `\n\n`;
       }
 
-      // Friday (dayOffset 4)
+      // Friday (dayOffset 3)
       if (fridayNoEvent) {
         schedule += `***Friday***\n> NO EVENTS\n\n\n`;
       } else {
@@ -359,22 +355,22 @@
           const euPreRallyHour = fridayEUTime === "3pm" ? 14 : 15;
           const euStartHour   = fridayEUTime === "3pm" ? 15 : 16;
           schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(4, euPreRallyHour, 30)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(4, euStartHour, 0)}:f>\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, euPreRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, euStartHour, 0)}:f>\n`;
           if (fridayNA) schedule += `> \n`;
         }
         if (fridayNA) {
           schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(4, 19, 0)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(4, 19, 30)}:f>\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, 19, 0)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, 19, 30)}:f>\n`;
         }
         schedule += `\n\n`;
       }
 
-      // Saturday (dayOffset 5)
+      // Saturday (dayOffset 4)
       if (saturdayEventName && saturdayEventLink) {
         const saturdayDate = new Date(startOfWeekEST);
-        saturdayDate.setDate(saturdayDate.getDate() + 5);
+        saturdayDate.setDate(saturdayDate.getDate() + 4);
         const formattedDate = `${saturdayDate.getMonth() + 1}.${saturdayDate.getDate()}`;
         schedule += `## ***Saturday, ${formattedDate}***\n`;
         schedule += `>  <:Bober:1279586151182766091> ${saturdayEventName}\n`;
@@ -383,15 +379,15 @@
       }
       if (saturdayNA) {
         schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
-        schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(5, 19, 0)}:f>\n`;
-        schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(5, 19, 30)}:f>\n`;
+        schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(4, 19, 0)}:f>\n`;
+        schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(4, 19, 30)}:f>\n`;
       }
       schedule += `\n\n`;
 
-      // Sunday (dayOffset 6)
+      // Sunday (dayOffset 5)
       if (sundayEventName && sundayEventLink) {
         const sundayDate = new Date(startOfWeekEST);
-        sundayDate.setDate(sundayDate.getDate() + 6);
+        sundayDate.setDate(sundayDate.getDate() + 5);
         const formattedDate = `${sundayDate.getMonth() + 1}.${sundayDate.getDate()}`;
         schedule += `## ***Sunday, ${formattedDate}***\n`;
         schedule += `>  <:Bober:1279586151182766091> ${sundayEventName}\n`;
@@ -400,8 +396,8 @@
       }
       if (sundayNA) {
         schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
-        schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(6, 19, 0)}:f>\n`;
-        schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(6, 19, 30)}:f>\n`;
+        schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(5, 19, 0)}:f>\n`;
+        schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(5, 19, 30)}:f>\n`;
       }
       schedule += `\n\n`;
 
