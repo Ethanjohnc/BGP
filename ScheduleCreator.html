@@ -44,6 +44,9 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
+    .nested-options {
+      margin-left: 20px;
+    }
     button {
       padding: 10px;
       background-color: #d4b484;
@@ -120,66 +123,118 @@
   <div class="container">
     <h1>BGP Schedule Creator</h1>
     <form id="scheduleForm">
-      <!-- Saturday Event -->
+      <!-- Saturday & Sunday Main Events -->
       <label>Saturday Event:</label>
       <input type="text" id="saturdayEventName" placeholder="Event Name (e.g., ARMYWIDE AGAINST: PORTUGAL)" />
-      <input type="url" id="saturdayEventLink" placeholder="Event Link (e.g., https://discord.gg/vH7dFVtn?event=...)" />
+      <input type="url" id="saturdayEventLink" placeholder="Event Link (e.g., https://discord.gg/yourevent)" />
 
-      <!-- Sunday Event -->
       <label>Sunday Event:</label>
       <input type="text" id="sundayEventName" placeholder="Event Name (e.g., ARMYWIDE AGAINST: ANDOUR)" />
-      <input type="url" id="sundayEventLink" placeholder="Event Link (e.g., https://discord.gg/nwxw?event=...)" />
+      <input type="url" id="sundayEventLink" placeholder="Event Link (e.g., https://discord.gg/yourevent)" />
 
-      <!-- Days of the Week -->
-      <label>Tuesday:</label>
+      <!-- Weekday Events -->
+      <!-- Tuesday -->
+      <label>***Tuesday***</label>
       <label><input type="checkbox" id="tuesdayNoEvent" /> No Event</label>
-      <label><input type="checkbox" id="tuesdayEU" /> EU Battle</label>
-      <label>
-        <input type="radio" name="tuesdayEUTime" value="3pm" checked /> 3 PM EST
-      </label>
-      <label>
-        <input type="radio" name="tuesdayEUTime" value="4pm" /> 4 PM EST
-      </label>
+      <label><input type="checkbox" id="tuesdayEU1" /> EU Battle at 1 PM EST</label>
+      <label><input type="checkbox" id="tuesdayEU2" /> EU Battle at 3/4 PM EST</label>
+      <div class="nested-options">
+        <label>
+          <input type="radio" name="tuesdayEU2Time" value="3pm" checked /> 3 PM EST
+        </label>
+        <label>
+          <input type="radio" name="tuesdayEU2Time" value="4pm" /> 4 PM EST
+        </label>
+      </div>
+      <div class="nested-options">
+        <label>Tuesday EU 1 PM Link:</label>
+        <input type="url" id="tuesdayEU1Link" placeholder="Link for Tuesday EU 1 PM Battle" />
+        <label>Tuesday EU 3/4 PM Link:</label>
+        <input type="url" id="tuesdayEU2Link" placeholder="Link for Tuesday EU Battle at 3/4 PM" />
+        <label>Tuesday NA Link:</label>
+        <input type="url" id="tuesdayNALink" placeholder="Link for Tuesday NA Battle" />
+      </div>
       <label><input type="checkbox" id="tuesdayNA" /> NA Battle</label>
 
-      <label>Wednesday:</label>
+      <!-- Wednesday -->
+      <label>***Wednesday***</label>
       <label><input type="checkbox" id="wednesdayNoEvent" /> No Event</label>
-      <label><input type="checkbox" id="wednesdayEU" /> EU Battle</label>
-      <label>
-        <input type="radio" name="wednesdayEUTime" value="3pm" checked /> 3 PM EST
-      </label>
-      <label>
-        <input type="radio" name="wednesdayEUTime" value="4pm" /> 4 PM EST
-      </label>
+      <label><input type="checkbox" id="wednesdayEU1" /> EU Battle at 1 PM EST</label>
+      <label><input type="checkbox" id="wednesdayEU2" /> EU Battle at 3/4 PM EST</label>
+      <div class="nested-options">
+        <label>
+          <input type="radio" name="wednesdayEU2Time" value="3pm" checked /> 3 PM EST
+        </label>
+        <label>
+          <input type="radio" name="wednesdayEU2Time" value="4pm" /> 4 PM EST
+        </label>
+      </div>
+      <div class="nested-options">
+        <label>Wednesday EU 1 PM Link:</label>
+        <input type="url" id="wednesdayEU1Link" placeholder="Link for Wednesday EU 1 PM Battle" />
+        <label>Wednesday EU 3/4 PM Link:</label>
+        <input type="url" id="wednesdayEU2Link" placeholder="Link for Wednesday EU Battle at 3/4 PM" />
+        <label>Wednesday NA Link:</label>
+        <input type="url" id="wednesdayNALink" placeholder="Link for Wednesday NA Battle" />
+      </div>
       <label><input type="checkbox" id="wednesdayNA" /> NA Battle</label>
 
-      <label>Thursday:</label>
+      <!-- Thursday -->
+      <label>***Thursday***</label>
       <label><input type="checkbox" id="thursdayNoEvent" /> No Event</label>
-      <label><input type="checkbox" id="thursdayEU" /> EU Battle</label>
-      <label>
-        <input type="radio" name="thursdayEUTime" value="3pm" checked /> 3 PM EST
-      </label>
-      <label>
-        <input type="radio" name="thursdayEUTime" value="4pm" /> 4 PM EST
-      </label>
+      <label><input type="checkbox" id="thursdayEU1" /> EU Battle at 1 PM EST</label>
+      <label><input type="checkbox" id="thursdayEU2" /> EU Battle at 3/4 PM EST</label>
+      <div class="nested-options">
+        <label>
+          <input type="radio" name="thursdayEU2Time" value="3pm" checked /> 3 PM EST
+        </label>
+        <label>
+          <input type="radio" name="thursdayEU2Time" value="4pm" /> 4 PM EST
+        </label>
+      </div>
+      <div class="nested-options">
+        <label>Thursday EU 1 PM Link:</label>
+        <input type="url" id="thursdayEU1Link" placeholder="Link for Thursday EU 1 PM Battle" />
+        <label>Thursday EU 3/4 PM Link:</label>
+        <input type="url" id="thursdayEU2Link" placeholder="Link for Thursday EU Battle at 3/4 PM" />
+        <label>Thursday NA Link:</label>
+        <input type="url" id="thursdayNALink" placeholder="Link for Thursday NA Battle" />
+      </div>
       <label><input type="checkbox" id="thursdayNA" /> NA Battle</label>
 
-      <label>Friday:</label>
+      <!-- Friday -->
+      <label>***Friday***</label>
       <label><input type="checkbox" id="fridayNoEvent" /> No Event</label>
-      <label><input type="checkbox" id="fridayEU" /> EU Battle</label>
-      <label>
-        <input type="radio" name="fridayEUTime" value="3pm" checked /> 3 PM EST
-      </label>
-      <label>
-        <input type="radio" name="fridayEUTime" value="4pm" /> 4 PM EST
-      </label>
+      <label><input type="checkbox" id="fridayEU1" /> EU Battle at 1 PM EST</label>
+      <label><input type="checkbox" id="fridayEU2" /> EU Battle at 3/4 PM EST</label>
+      <div class="nested-options">
+        <label>
+          <input type="radio" name="fridayEU2Time" value="3pm" checked /> 3 PM EST
+        </label>
+        <label>
+          <input type="radio" name="fridayEU2Time" value="4pm" /> 4 PM EST
+        </label>
+      </div>
+      <div class="nested-options">
+        <label>Friday EU 1 PM Link:</label>
+        <input type="url" id="fridayEU1Link" placeholder="Link for Friday EU 1 PM Battle" />
+        <label>Friday EU 3/4 PM Link:</label>
+        <input type="url" id="fridayEU2Link" placeholder="Link for Friday EU Battle at 3/4 PM" />
+        <label>Friday NA Link:</label>
+        <input type="url" id="fridayNALink" placeholder="Link for Friday NA Battle" />
+      </div>
       <label><input type="checkbox" id="fridayNA" /> NA Battle</label>
 
-      <label>Saturday:</label>
+      <!-- Saturday & Sunday NA (optional) -->
+      <label>***Saturday***</label>
       <label><input type="checkbox" id="saturdayNA" /> NA Battle</label>
+      <label>Saturday NA Link:</label>
+      <input type="url" id="saturdayNALink" placeholder="Link for Saturday NA Battle" />
 
-      <label>Sunday:</label>
+      <label>***Sunday***</label>
       <label><input type="checkbox" id="sundayNA" /> NA Battle</label>
+      <label>Sunday NA Link:</label>
+      <input type="url" id="sundayNALink" placeholder="Link for Sunday NA Battle" />
 
       <!-- Generate Button -->
       <button type="button" onclick="generateSchedule()">Generate Schedule</button>
@@ -210,41 +265,79 @@
       return new Date(utc - (5 * 60 * 60000));
     }
 
+    // Helper function to determine pre rally and start times based on the selected time option
+    function getBattleTimes(euTime) {
+      let preRallyHour, startHour;
+      if (euTime === "1pm") {
+        preRallyHour = 12;
+        startHour = 13;
+      } else if (euTime === "3pm") {
+        preRallyHour = 14;
+        startHour = 15;
+      } else if (euTime === "4pm") {
+        preRallyHour = 15;
+        startHour = 16;
+      }
+      return { preRallyHour, startHour };
+    }
+
     // Generate the schedule using EST as the base timezone.
     function generateSchedule() {
-      // Get form inputs for Saturday and Sunday events
+      // Saturday and Sunday main event inputs
       const saturdayEventName = document.getElementById("saturdayEventName").value;
       const saturdayEventLink = document.getElementById("saturdayEventLink").value;
       const sundayEventName = document.getElementById("sundayEventName").value;
       const sundayEventLink = document.getElementById("sundayEventLink").value;
 
+      // Tuesday
       const tuesdayNoEvent = document.getElementById("tuesdayNoEvent").checked;
-      const tuesdayEU = document.getElementById("tuesdayEU").checked;
-      const tuesdayEUTime = document.querySelector('input[name="tuesdayEUTime"]:checked').value;
+      const tuesdayEU1 = document.getElementById("tuesdayEU1").checked;
+      const tuesdayEU2 = document.getElementById("tuesdayEU2").checked;
+      const tuesdayEU2Time = document.querySelector('input[name="tuesdayEU2Time"]:checked').value;
       const tuesdayNA = document.getElementById("tuesdayNA").checked;
+      const tuesdayEU1Link = document.getElementById("tuesdayEU1Link").value;
+      const tuesdayEU2Link = document.getElementById("tuesdayEU2Link").value;
+      const tuesdayNALink = document.getElementById("tuesdayNALink").value;
 
+      // Wednesday
       const wednesdayNoEvent = document.getElementById("wednesdayNoEvent").checked;
-      const wednesdayEU = document.getElementById("wednesdayEU").checked;
-      const wednesdayEUTime = document.querySelector('input[name="wednesdayEUTime"]:checked').value;
+      const wednesdayEU1 = document.getElementById("wednesdayEU1").checked;
+      const wednesdayEU2 = document.getElementById("wednesdayEU2").checked;
+      const wednesdayEU2Time = document.querySelector('input[name="wednesdayEU2Time"]:checked').value;
       const wednesdayNA = document.getElementById("wednesdayNA").checked;
+      const wednesdayEU1Link = document.getElementById("wednesdayEU1Link").value;
+      const wednesdayEU2Link = document.getElementById("wednesdayEU2Link").value;
+      const wednesdayNALink = document.getElementById("wednesdayNALink").value;
 
+      // Thursday
       const thursdayNoEvent = document.getElementById("thursdayNoEvent").checked;
-      const thursdayEU = document.getElementById("thursdayEU").checked;
-      const thursdayEUTime = document.querySelector('input[name="thursdayEUTime"]:checked').value;
+      const thursdayEU1 = document.getElementById("thursdayEU1").checked;
+      const thursdayEU2 = document.getElementById("thursdayEU2").checked;
+      const thursdayEU2Time = document.querySelector('input[name="thursdayEU2Time"]:checked').value;
       const thursdayNA = document.getElementById("thursdayNA").checked;
+      const thursdayEU1Link = document.getElementById("thursdayEU1Link").value;
+      const thursdayEU2Link = document.getElementById("thursdayEU2Link").value;
+      const thursdayNALink = document.getElementById("thursdayNALink").value;
 
+      // Friday
       const fridayNoEvent = document.getElementById("fridayNoEvent").checked;
-      const fridayEU = document.getElementById("fridayEU").checked;
-      const fridayEUTime = document.querySelector('input[name="fridayEUTime"]:checked').value;
+      const fridayEU1 = document.getElementById("fridayEU1").checked;
+      const fridayEU2 = document.getElementById("fridayEU2").checked;
+      const fridayEU2Time = document.querySelector('input[name="fridayEU2Time"]:checked').value;
       const fridayNA = document.getElementById("fridayNA").checked;
+      const fridayEU1Link = document.getElementById("fridayEU1Link").value;
+      const fridayEU2Link = document.getElementById("fridayEU2Link").value;
+      const fridayNALink = document.getElementById("fridayNALink").value;
 
+      // Saturday and Sunday NA links (if any)
       const saturdayNA = document.getElementById("saturdayNA").checked;
+      const saturdayNALink = document.getElementById("saturdayNALink").value;
       const sundayNA = document.getElementById("sundayNA").checked;
+      const sundayNALink = document.getElementById("sundayNALink").value;
 
       // --- Compute the upcoming Tuesday in EST ---
       const nowEST = getCurrentEST();
       const currentDayEST = nowEST.getDay(); // 0 (Sunday) to 6 (Saturday)
-      // Calculate days until next Tuesday (day 2). If today is Tuesday or later, add 7.
       let diffToTuesday = 2 - currentDayEST;
       if (diffToTuesday <= 0) {
         diffToTuesday += 7;
@@ -257,7 +350,7 @@
       endOfWeekEST.setDate(startOfWeekEST.getDate() + 5);
       const formattedWeekDates = `${startOfWeekEST.getMonth() + 1}/${startOfWeekEST.getDate()} - ${endOfWeekEST.getMonth() + 1}/${endOfWeekEST.getDate()}`;
 
-      // --- Helper: Compute epoch timestamp for a given day offset (from Tuesday) and EST time ---
+      // Helper: Compute epoch timestamp for a given day offset (from Tuesday) and EST time
       const getEpochTime = (dayOffset, hour, minute) => {
         const eventDate = new Date(startOfWeekEST);
         eventDate.setDate(eventDate.getDate() + dayOffset);
@@ -273,7 +366,7 @@
       // --- Build Header ---
       let header = `# <:Warsaw:973934291610386512> *POLSKICH GRENADIEROW SCHEDULE* <:BatalionuGrenadierwPolskich:1325163003297009674>\n`;
       header += `                           *${formattedWeekDates}*\n\n`;
-      header += `<:Eagle:1203658131134087168>   **-**   **CRUICAL EVENT**\n`;
+      header += `<:Eagle:1203658131134087168>   **-**   **CRUCIAL EVENT**\n`;
       header += `>  Grand Battle's / Campaign Battles or Fighting Rivals of the Regiment. **MANDATORY**\n\n`;
       header += `<:Bober:1279586151182766091>   **-**   **COMPETITIVE EVENT**\n`;
       header += `>  Mini Grand Battle's / Army Wide's / Korp Wide's used to learn and improve how to be a better teammate and ranker. **MANDATORY**\n\n`;
@@ -288,20 +381,36 @@
         schedule += `***Tuesday***\n> NO EVENTS\n\n\n`;
       } else {
         schedule += `***Tuesday***\n`;
-        if (tuesdayEU) {
-          const euPreRallyHour = tuesdayEUTime === "3pm" ? 14 : 15;
-          const euStartHour   = tuesdayEUTime === "3pm" ? 15 : 16;
-          schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(0, euPreRallyHour, 30)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(0, euStartHour, 0)}:f>\n`;
-          if (tuesdayNA) schedule += `> \n`;
+        if (tuesdayEU1) {
+          const { preRallyHour, startHour } = getBattleTimes("1pm");
+          schedule += `>  <:WAR:1163681804679651338> **EU (1 PM)** Battle\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(0, preRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(0, startHour, 0)}:f>\n`;
+          if (tuesdayEU1Link) {
+            schedule += `>   <:Link:1292774577134374956>  ${tuesdayEU1Link}\n`;
+          }
+          schedule += `\n`; // Extra blank line between events
+        }
+        if (tuesdayEU2) {
+          const { preRallyHour, startHour } = getBattleTimes(tuesdayEU2Time);
+          schedule += `>  <:WAR:1163681804679651338> **EU (${tuesdayEU2Time.toUpperCase()})** Battle\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(0, preRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(0, startHour, 0)}:f>\n`;
+          if (tuesdayEU2Link) {
+            schedule += `>   <:Link:1292774577134374956>  ${tuesdayEU2Link}\n`;
+          }
+          schedule += `\n`;
         }
         if (tuesdayNA) {
           schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
           schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(0, 19, 0)}:f>\n`;
           schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(0, 19, 30)}:f>\n`;
+          if (tuesdayNALink) {
+            schedule += `>   <:Link:1292774577134374956>  ${tuesdayNALink}\n`;
+          }
+          schedule += `\n`;
         }
-        schedule += `\n\n`;
+        schedule += `\n`;
       }
 
       // Wednesday (dayOffset 1)
@@ -309,20 +418,36 @@
         schedule += `***Wednesday***\n> NO EVENTS\n\n\n`;
       } else {
         schedule += `***Wednesday***\n`;
-        if (wednesdayEU) {
-          const euPreRallyHour = wednesdayEUTime === "3pm" ? 14 : 15;
-          const euStartHour   = wednesdayEUTime === "3pm" ? 15 : 16;
-          schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, euPreRallyHour, 30)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, euStartHour, 0)}:f>\n`;
-          if (wednesdayNA) schedule += `> \n`;
+        if (wednesdayEU1) {
+          const { preRallyHour, startHour } = getBattleTimes("1pm");
+          schedule += `>  <:WAR:1163681804679651338> **EU (1 PM)** Battle\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, preRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, startHour, 0)}:f>\n`;
+          if (wednesdayEU1Link) {
+            schedule += `>   <:Link:1292774577134374956>  ${wednesdayEU1Link}\n`;
+          }
+          schedule += `\n`;
+        }
+        if (wednesdayEU2) {
+          const { preRallyHour, startHour } = getBattleTimes(wednesdayEU2Time);
+          schedule += `>  <:WAR:1163681804679651338> **EU (${wednesdayEU2Time.toUpperCase()})** Battle\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, preRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, startHour, 0)}:f>\n`;
+          if (wednesdayEU2Link) {
+            schedule += `>   <:Link:1292774577134374956>  ${wednesdayEU2Link}\n`;
+          }
+          schedule += `\n`;
         }
         if (wednesdayNA) {
           schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
           schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(1, 19, 0)}:f>\n`;
           schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(1, 19, 30)}:f>\n`;
+          if (wednesdayNALink) {
+            schedule += `>   <:Link:1292774577134374956>  ${wednesdayNALink}\n`;
+          }
+          schedule += `\n`;
         }
-        schedule += `\n\n`;
+        schedule += `\n`;
       }
 
       // Thursday (dayOffset 2)
@@ -330,20 +455,36 @@
         schedule += `***Thursday***\n> NO EVENTS\n\n\n`;
       } else {
         schedule += `***Thursday***\n`;
-        if (thursdayEU) {
-          const euPreRallyHour = thursdayEUTime === "3pm" ? 14 : 15;
-          const euStartHour   = thursdayEUTime === "3pm" ? 15 : 16;
-          schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, euPreRallyHour, 30)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, euStartHour, 0)}:f>\n`;
-          if (thursdayNA) schedule += `> \n`;
+        if (thursdayEU1) {
+          const { preRallyHour, startHour } = getBattleTimes("1pm");
+          schedule += `>  <:WAR:1163681804679651338> **EU (1 PM)** Battle\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, preRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, startHour, 0)}:f>\n`;
+          if (thursdayEU1Link) {
+            schedule += `>   <:Link:1292774577134374956>  ${thursdayEU1Link}\n`;
+          }
+          schedule += `\n`;
+        }
+        if (thursdayEU2) {
+          const { preRallyHour, startHour } = getBattleTimes(thursdayEU2Time);
+          schedule += `>  <:WAR:1163681804679651338> **EU (${thursdayEU2Time.toUpperCase()})** Battle\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, preRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, startHour, 0)}:f>\n`;
+          if (thursdayEU2Link) {
+            schedule += `>   <:Link:1292774577134374956>  ${thursdayEU2Link}\n`;
+          }
+          schedule += `\n`;
         }
         if (thursdayNA) {
           schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
           schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(2, 19, 0)}:f>\n`;
           schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(2, 19, 30)}:f>\n`;
+          if (thursdayNALink) {
+            schedule += `>   <:Link:1292774577134374956>  ${thursdayNALink}\n`;
+          }
+          schedule += `\n`;
         }
-        schedule += `\n\n`;
+        schedule += `\n`;
       }
 
       // Friday (dayOffset 3)
@@ -351,23 +492,39 @@
         schedule += `***Friday***\n> NO EVENTS\n\n\n`;
       } else {
         schedule += `***Friday***\n`;
-        if (fridayEU) {
-          const euPreRallyHour = fridayEUTime === "3pm" ? 14 : 15;
-          const euStartHour   = fridayEUTime === "3pm" ? 15 : 16;
-          schedule += `>  <:WAR:1163681804679651338> **EU** Battle\n`;
-          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, euPreRallyHour, 30)}:f>\n`;
-          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, euStartHour, 0)}:f>\n`;
-          if (fridayNA) schedule += `> \n`;
+        if (fridayEU1) {
+          const { preRallyHour, startHour } = getBattleTimes("1pm");
+          schedule += `>  <:WAR:1163681804679651338> **EU (1 PM)** Battle\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, preRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, startHour, 0)}:f>\n`;
+          if (fridayEU1Link) {
+            schedule += `>   <:Link:1292774577134374956>  ${fridayEU1Link}\n`;
+          }
+          schedule += `\n`;
+        }
+        if (fridayEU2) {
+          const { preRallyHour, startHour } = getBattleTimes(fridayEU2Time);
+          schedule += `>  <:WAR:1163681804679651338> **EU (${fridayEU2Time.toUpperCase()})** Battle\n`;
+          schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, preRallyHour, 30)}:f>\n`;
+          schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, startHour, 0)}:f>\n`;
+          if (fridayEU2Link) {
+            schedule += `>   <:Link:1292774577134374956>  ${fridayEU2Link}\n`;
+          }
+          schedule += `\n`;
         }
         if (fridayNA) {
           schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
           schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(3, 19, 0)}:f>\n`;
           schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(3, 19, 30)}:f>\n`;
+          if (fridayNALink) {
+            schedule += `>   <:Link:1292774577134374956>  ${fridayNALink}\n`;
+          }
+          schedule += `\n`;
         }
-        schedule += `\n\n`;
+        schedule += `\n`;
       }
 
-      // Saturday (dayOffset 4)
+      // Saturday (dayOffset 4) - Main event and optional NA battle
       if (saturdayEventName && saturdayEventLink) {
         const saturdayDate = new Date(startOfWeekEST);
         saturdayDate.setDate(saturdayDate.getDate() + 4);
@@ -375,16 +532,20 @@
         schedule += `## ***Saturday, ${formattedDate}***\n`;
         schedule += `>  <:Bober:1279586151182766091> ${saturdayEventName}\n`;
         schedule += `>  ${saturdayEventLink}\n`;
-        if (saturdayNA) schedule += `> \n`;
+        schedule += `\n`;
       }
       if (saturdayNA) {
         schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
         schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(4, 19, 0)}:f>\n`;
         schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(4, 19, 30)}:f>\n`;
+        if (saturdayNALink) {
+          schedule += `>   <:Link:1292774577134374956>  ${saturdayNALink}\n`;
+        }
+        schedule += `\n`;
       }
-      schedule += `\n\n`;
+      schedule += `\n`;
 
-      // Sunday (dayOffset 5)
+      // Sunday (dayOffset 5) - Main event and optional NA battle
       if (sundayEventName && sundayEventLink) {
         const sundayDate = new Date(startOfWeekEST);
         sundayDate.setDate(sundayDate.getDate() + 5);
@@ -392,14 +553,18 @@
         schedule += `## ***Sunday, ${formattedDate}***\n`;
         schedule += `>  <:Bober:1279586151182766091> ${sundayEventName}\n`;
         schedule += `>  ${sundayEventLink}\n`;
-        if (sundayNA) schedule += `> \n`;
+        schedule += `\n`;
       }
       if (sundayNA) {
         schedule += `>  <:WAR:1163681804679651338> **NA** Battle\n`;
         schedule += `>  ⏰ Pre Rally: <t:${getEpochTime(5, 19, 0)}:f>\n`;
         schedule += `>  <:COATOFARMS:1163444199501336667> Start: <t:${getEpochTime(5, 19, 30)}:f>\n`;
+        if (sundayNALink) {
+          schedule += `>   <:Link:1292774577134374956>  ${sundayNALink}\n`;
+        }
+        schedule += `\n`;
       }
-      schedule += `\n\n`;
+      schedule += `\n`;
 
       // Display outputs and show copy buttons
       document.getElementById("headerOutput").textContent = header;
